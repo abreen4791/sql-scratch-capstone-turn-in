@@ -1,0 +1,251 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Arial-ItalicMT;\f1\froman\fcharset0 Times-Roman;\f2\fswiss\fcharset0 ArialMT;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Question 1 
+\f1\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 SELECT COUNT (DISTINCT utm_campaign)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM page_visits;
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\
+\
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 SELECT COUNT (DISTINCT utm_source)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM page_visits; 
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 SELECT DISTINCT utm_source, utm_campaign
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM page_visits; 
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 Question 2
+\f1\i0\fs24 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 SELECT DISTINCT page_name
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM page_visits; 
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 Question 3 
+\f1\i0\fs24 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 WITH first_touch AS (
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0SELECT user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0MIN(timestamp) as first_touch_at
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0FROM page_visits
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY user_id)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 SELECT ft.user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0ft.first_touch_at,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0pv.utm_source,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0pv.utm_campaign,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0COUNT(utm_campaign) as FT
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM first_touch ft
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 JOIN page_visits pv
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0ON ft.user_id = pv.user_id
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0AND ft.first_touch_at = pv.timestamp
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY utm_campaign
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0order by FT ASC;
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 Question 4 
+\f1\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 WITH last_touch AS (
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0SELECT user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0MAX(timestamp) as last_touch_at
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0FROM page_visits
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY user_id)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 SELECT lt.user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0lt.last_touch_at,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0pv.utm_source,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0pv.utm_campaign,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0COUNT(utm_campaign) as LT
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM last_touch lt
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 JOIN page_visits pv
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0ON lt.user_id = pv.user_id
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0AND lt.last_touch_at = pv.timestamp
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY utm_campaign
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0order by LT ASC;
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\
+\pard\pardeftab720\li960\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 \uc0\u8232 \u8232 
+\f1\fs24 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 Question 5
+\f1\i0\fs24 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 SELECT COUNT(DISTINCT user_id)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 from page_visits
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 WHERE page_name = '4 - purchase';
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\i\fs29\fsmilli14667 \cf2 Question 6 
+\f1\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf2 WITH last_touch AS (
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0SELECT user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0MAX(timestamp) as last_touch_at
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0FROM page_visits
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0WHERE page_name = '4 - purchase'
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY user_id)
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 SELECT lt.user_id,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0lt.last_touch_at,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0pv.utm_source,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0pv.utm_campaign,
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0\'a0\'a0\'a0\'a0COUNT(utm_campaign) as LT
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 FROM last_touch lt
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667 JOIN page_visits pv
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0ON lt.user_id = pv.user_id
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0AND lt.last_touch_at = pv.timestamp
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0GROUP BY utm_campaign
+\f1\fs24 \
+
+\f2\fs29\fsmilli14667  \'a0\'a0\'a0ORDER BY LT ASC;
+\f1\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \
+}
